@@ -1,4 +1,4 @@
-from .imports import os, shutil
+from .hub_imports import os, shutil
 
 def load_dataset(images_path: str, added_new_images: bool = False) -> list:
     

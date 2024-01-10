@@ -1,4 +1,6 @@
-from .imports import torchvision, plt, np, grad_cam
+from .hub_imports import torchvision, plt, np, grad_cam
+
+# My imports
 from .model import inference
 from .utility import tensor2ndarray
 
@@ -88,10 +90,10 @@ def accuracy_display(dataset: list, model: torchvision.models, epsilons: list, a
         temp_str = 'FGSM ->'
         wrong_preds_display(wrong_preds[0], dataset, model, epsilons, temp_str)
     if dict_show_wrong_preds['show_IFGSM_wrong_preds'] == True:
-        temp_str = f'I-FGSM ->'
+        temp_str = 'I-FGSM ->'
         wrong_preds_display(wrong_preds[1], dataset, model, epsilons, temp_str)
     if dict_show_wrong_preds['show_PGD_wrong_preds'] == True:
-        temp_str = f'PGD ->'
+        temp_str = 'PGD ->'
         wrong_preds_display(wrong_preds[2], dataset, model, epsilons, temp_str)
 
 def wrong_preds_display(dict_wrong_preds: dict, dataset: list, model: torchvision.models, epsilons: list, temp_str: str) -> None:
@@ -119,5 +121,5 @@ def wrong_preds_display(dict_wrong_preds: dict, dataset: list, model: torchvisio
             plt.suptitle(f'{temp_str} Epsilon: {epsilons[i]}')
             plt.subplot(1, column_number, j + 1)
             plt.imshow(tensor2ndarray(dict_wrong_preds[epsilons[i]][j]))
-            plt.title(f'Wrong pred:\n' + class_name + '\n' + f'{class_conf*100:.3}%' + '\n', color = 'red')
+            plt.title('Wrong pred:\n' + class_name + '\n' + f'{class_conf*100:.3}%' + '\n', color = 'red')
             plt.axis('off')

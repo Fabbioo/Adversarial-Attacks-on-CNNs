@@ -1,7 +1,9 @@
+# Built-in imports
 import os
 import shutil
 import warnings
 
+# Third-part imports
 import numpy as np
 from matplotlib import pyplot as plt
 import torch

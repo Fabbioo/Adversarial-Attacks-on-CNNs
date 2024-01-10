@@ -1,4 +1,4 @@
-from .imports import warnings, torch, plt, os
+from .hub_imports import warnings, torch, plt, os
 
 warnings.filterwarnings('ignore')
 

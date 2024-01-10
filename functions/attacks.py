@@ -1,6 +1,7 @@
-from .imports import torch, torchvision
+from .hub_imports import torch, torchvision
+
+# My imports
 from .model import inference
-from .utility import *
 
 def fgsm_attack(model: torchvision.models, loss_fn, image: torch.Tensor, epsilon: float, device: str) -> torch.Tensor:
     

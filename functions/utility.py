@@ -1,4 +1,4 @@
-from .imports import torch, torchvision, np, plt
+from .hub_imports import torch, torchvision, np, plt
 
 def tensor2ndarray(tensor: torch.Tensor) -> np.ndarray:
     
