@@ -1,4 +1,3 @@
 .DS_Store
 res/*.pth
 report.docx
-functions/__pycache__/*.pyc
