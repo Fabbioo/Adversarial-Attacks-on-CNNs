@@ -3,78 +3,81 @@ from .hub_imports import torch, torchvision
 # My imports
 from .model import inference
 
-def fgsm_attack(model: torchvision.models, loss_fn, image: torch.Tensor, epsilon: float, device: str) -> torch.Tensor:
+def fgsm_attack(model: torchvision.models, loss_fn: any, image: torch.Tensor, epsilon: float, device: str) -> torch.Tensor:
     
     if epsilon == 0:
         return image
     
-    image.requires_grad = True
+    original_image: torch.Tensor = image.clone()
     
-    label: int = inference(model, image)[0]
+    original_image.requires_grad = True
+    
+    label: int = inference(model, original_image)[0]
     label = torch.Tensor([label]).long().to(device)
     
-    pred = model(image).to(device)
+    output: torch.Tensor = model(original_image)
     model.zero_grad()
     
-    loss = loss_fn(pred, label)    
+    loss: torch.Tensor = loss_fn(output, label)
     loss.backward()
-    
-    img_grad_sign = image.grad.sign()
-    perturbed_img = image + epsilon * img_grad_sign
-    
-    return perturbed_img
 
-def ifgsm_attack(model: torchvision.models, loss_fn, image: torch.Tensor, epsilon: float , alpha: float, iters: int, device: str) -> torch.Tensor:
+    perturbed_image: torch.Tensor = original_image + epsilon * original_image.grad.sign()
+    
+    return perturbed_image
+
+def ifgsm_attack(model: torchvision.models, loss_fn: any, image: torch.Tensor, epsilon: float , alpha: float, iters: int, device: str) -> torch.Tensor:
     
     if epsilon == 0:
         return image
     
-    label: int = inference(model, image)[0]
-    label = torch.Tensor([label]).long().to(device)
+    original_image: torch.Tensor = image.clone()
+    perturbed_image: torch.Tensor = image.clone()
+
+    label: int = inference(model, original_image)[0]
+    label = torch.Tensor([label]).long().to(device)    
         
     for _ in range(iters):
 
-        image.requires_grad = True
+        perturbed_image.requires_grad = True
         
-        output = model(image)
+        output: torch.Tensor = model(perturbed_image)
         model.zero_grad()
         
-        loss = loss_fn(output, label)
+        loss: torch.Tensor = loss_fn(output, label)
         loss.backward()
         
-        image = image + alpha * image.grad.sign()
-        image = torch.max(torch.min(image, image + epsilon), image - epsilon)
-        image = image.detach()
-    
-    perturbed_img = image.clone() # Solo per leggibilità del codice
+        perturbed_image: torch.Tensor = perturbed_image + alpha * perturbed_image.grad.sign()
+        perturbed_image = torch.clamp(perturbed_image, perturbed_image - epsilon, perturbed_image + epsilon)
 
-    return perturbed_img
+        perturbed_image = perturbed_image.detach()
 
-def pgd_attack(model: torchvision.models, loss_fn, image: torch.Tensor, epsilon: float, alpha: float, iters: int, device: str) -> torch.Tensor:
+    return perturbed_image
+
+def pgd_attack(model: torchvision.models, loss_fn: any, image: torch.Tensor, epsilon: float, alpha: float, iters: int, device: str) -> torch.Tensor:
     
     if epsilon == 0:
         return image
     
-    original_img = image.clone()
+    original_image: torch.Tensor = image.clone()
+    perturbed_image: torch.Tensor = image.clone()
     
-    label: int = inference(model, original_img)[0]
+    label: int = inference(model, original_image)[0]
     label = torch.Tensor([label]).long().to(device)
     
     for _ in range(iters):
         
-        image.requires_grad = True
+        perturbed_image.requires_grad = True
         
-        pred = model(image)
+        output: torch.Tensor = model(perturbed_image)
         model.zero_grad()
         
-        loss = loss_fn(pred, label)
+        loss: torch.Tensor = loss_fn(output, label)
         loss.backward()
-        
-        img_grad_sign = image.grad.sign()
-        adv_image = image + alpha * img_grad_sign
-        noise = torch.clamp(adv_image - original_img, -epsilon, epsilon)
-        image = (original_img + noise).detach()
+
+        adv_image: torch.Tensor = perturbed_image + alpha * perturbed_image.grad.sign()
+        noise: torch.Tensor = torch.clamp(adv_image - original_image, -epsilon, epsilon)
+        perturbed_image = original_image + noise
+
+        perturbed_image = perturbed_image.detach()
     
-    perturbed_img = image.clone() # Solo per leggibilità del codice
-    
-    return perturbed_img
+    return perturbed_image

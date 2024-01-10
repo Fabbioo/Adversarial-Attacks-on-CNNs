@@ -16,7 +16,7 @@ x_figure_size: int = 16
 y_figure_size: int = 8
 fig_size: tuple = (x_figure_size, y_figure_size)
 
-parametri_grafici = {
+parametri_grafici: dict = {
     'figure.figsize': fig_size, # Dimensione della figura.
     'figure.autolayout': True,  # Regolazione automatica delle dimensioni della figura.
     'figure.titlesize': 20,     # Dimensione del titolo associato ad ogni figura (plt.suptitle()).
