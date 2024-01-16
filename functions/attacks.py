@@ -1,9 +1,10 @@
 from .hub_imports import torch, torchvision
+from .hub_settings import device
 
 # My imports
 from .model import inference
 
-def fgsm_attack(model: torchvision.models, loss_fn: any, image: torch.Tensor, epsilon: float, device: str) -> torch.Tensor:
+def fgsm_attack(model: torchvision.models, loss_fn: any, image: torch.Tensor, epsilon: float) -> torch.Tensor:
     
     if epsilon == 0:
         return image
@@ -25,7 +26,7 @@ def fgsm_attack(model: torchvision.models, loss_fn: any, image: torch.Tensor, ep
     
     return perturbed_image
 
-def ifgsm_attack(model: torchvision.models, loss_fn: any, image: torch.Tensor, epsilon: float , alpha: float, iters: int, device: str) -> torch.Tensor:
+def ifgsm_attack(model: torchvision.models, loss_fn: any, image: torch.Tensor, epsilon: float , alpha: float, iters: int) -> torch.Tensor:
     
     if epsilon == 0:
         return image
@@ -53,7 +54,7 @@ def ifgsm_attack(model: torchvision.models, loss_fn: any, image: torch.Tensor, e
 
     return perturbed_image
 
-def pgd_attack(model: torchvision.models, loss_fn: any, image: torch.Tensor, epsilon: float, alpha: float, iters: int, device: str) -> torch.Tensor:
+def pgd_attack(model: torchvision.models, loss_fn: any, image: torch.Tensor, epsilon: float, alpha: float, iters: int) -> torch.Tensor:
     
     if epsilon == 0:
         return image

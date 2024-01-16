@@ -5,7 +5,7 @@ from .attacks import *
 from .model import inference
 from .utility import preprocess, postprocess
 
-def compute_accuracy(attack_type: int, dataset: list, model: torchvision.models, device: str, img_resize: tuple, epsilons: list, alphas: list, iters: int = 0) -> tuple[list, dict]:
+def compute_accuracy(attack_type: int, dataset: list, model: torchvision.models, epsilons: list, alphas: list, iters: int = 0) -> tuple[list, dict]:
     
     accuracies: list = []
     dict_wrong_preds: dict = {}
@@ -20,17 +20,18 @@ def compute_accuracy(attack_type: int, dataset: list, model: torchvision.models,
             loss_fn = nn.CrossEntropyLoss()
             
             original_image: torch.Tensor = read_image(image)
-            original_image = preprocess(original_image, img_resize).to(device)
+            original_image = preprocess(original_image)
             
             if attack_type == 'FGSM':
-                perturbed_image: torch.Tensor = fgsm_attack(model, loss_fn, original_image, epsilon, device)
+                perturbed_image: torch.Tensor = fgsm_attack(model, loss_fn, original_image, epsilon)
             elif attack_type == 'I-FGSM':
-                perturbed_image: torch.Tensor = ifgsm_attack(model, loss_fn, original_image, epsilon, alpha, iters, device)
+                perturbed_image: torch.Tensor = ifgsm_attack(model, loss_fn, original_image, epsilon, alpha, iters)
             elif attack_type == 'PGD':
-                perturbed_image: torch.Tensor = pgd_attack(model, loss_fn, original_image, epsilon, alpha, iters, device)
+                perturbed_image: torch.Tensor = pgd_attack(model, loss_fn, original_image, epsilon, alpha, iters)
             
             original_image = postprocess(original_image)
             perturbed_image = postprocess(perturbed_image)
+            
             pred1: int = inference(model, original_image)[0]
             pred2: int = inference(model, perturbed_image)[0]
             if pred1 == pred2:

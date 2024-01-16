@@ -1,4 +1,5 @@
 from .hub_imports import torch, torchvision, np, plt
+from .hub_settings import device, img_resize
 
 def tensor2ndarray(tensor: torch.Tensor) -> np.ndarray:
     
@@ -33,8 +34,9 @@ def denormalize(image: torch.Tensor) -> torch.Tensor:
     
     return image
 
-def preprocess(image: torch.Tensor, img_resize: tuple) -> torch.Tensor:
+def preprocess(image: torch.Tensor) -> torch.Tensor:
     
+    image = image.to(device)
     image = torch.clamp(image, 0, 255).to(torch.uint8)
     image = torchvision.transforms.functional.resize(image, [img_resize[0], img_resize[1]])
     image = image.float() / 255.

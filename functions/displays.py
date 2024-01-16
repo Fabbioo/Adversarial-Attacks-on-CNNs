@@ -1,4 +1,5 @@
 from .hub_imports import torchvision, plt, np, grad_cam
+from .hub_settings import img_resize
 
 # My imports
 from .model import inference
@@ -34,7 +35,7 @@ def preds_display(model: torchvision.models, tripla: tuple, epsilon: float, show
         else:
             plt.title(objects[2] + f' (Epsilon: {epsilon})\n\n' + str(outputs_pert[0]) + ': ' + outputs_pert[1] + f' -> {outputs_pert[2] * 100:.3}%', color = color)
 
-def gradcam_display(model: torchvision.models, tripla: tuple, resize: tuple) -> None:
+def gradcam_display(model: torchvision.models, tripla: tuple) -> None:
     
     layer: str = 'layer4'
     
@@ -49,12 +50,12 @@ def gradcam_display(model: torchvision.models, tripla: tuple, resize: tuple) -> 
     
     cam_orig = grad_cam(model, tripla[0], target = outputs_orig[0], saliency_layer = layer)
     cam_orig = (cam_orig - cam_orig.min()) / (cam_orig.max() - cam_orig.min())
-    cam_orig = torchvision.transforms.functional.resize(cam_orig, [resize[0], resize[1]])
+    cam_orig = torchvision.transforms.functional.resize(cam_orig, [img_resize[0], img_resize[1]])
     image_to_show_orig = cam_orig[0].permute(1, 2, 0).detach().cpu().numpy()
     
     cam_pert = grad_cam(model, tripla[2], target = outputs_pert[0], saliency_layer = layer)
     cam_pert = (cam_pert - cam_pert.min()) / (cam_pert.max() - cam_pert.min())
-    cam_pert = torchvision.transforms.functional.resize(cam_pert, [resize[0], resize[1]])
+    cam_pert = torchvision.transforms.functional.resize(cam_pert, [img_resize[0], img_resize[1]])
     image_to_show_pert = cam_pert[0].permute(1, 2, 0).detach().cpu().numpy()
     
     plt.figure()

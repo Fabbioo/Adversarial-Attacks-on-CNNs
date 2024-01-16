@@ -1,9 +1,11 @@
 from .hub_imports import torch, torchvision, ResNet50_Weights, resnet50
+from .hub_settings import device
 
 def load_model_resnet50() -> torchvision.models:
     
     model: torchvision.models = resnet50(weights = ResNet50_Weights.IMAGENET1K_V2) # Lista delle classi: https://deeplearning.cms.waikato.ac.nz/user-guide/class-maps/IMAGENET/
     model.eval()
+    model.to(device)
     
     return model
 
