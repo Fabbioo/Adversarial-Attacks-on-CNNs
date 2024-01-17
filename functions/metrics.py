@@ -1,6 +1,5 @@
 from .hub_imports import nn, np, read_image
 
-# My imports
 from .attacks import *
 from .model import inference
 from .utility import preprocess, postprocess

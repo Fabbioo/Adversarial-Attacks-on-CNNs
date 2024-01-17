@@ -1,7 +1,6 @@
 from .hub_imports import torchvision, plt, np, grad_cam
 from .hub_settings import img_resize
 
-# My imports
 from .model import inference
 from .utility import tensor2ndarray
 
