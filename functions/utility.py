@@ -10,7 +10,7 @@ def tensor2ndarray(tensor: torch.Tensor) -> np.ndarray:
 
 def visualize(image: torch.Tensor) -> None:
     
-    plt.figure(figsize = (6, 6))
+    plt.figure(figsize = (8, 8))
     plt.axis('off')
     plt.imshow(image)
 
