@@ -1,10 +1,10 @@
-from .hub_imports import nn, np, read_image
+from .hub_imports import np, read_image
 
 from .attacks import *
 from .model import inference
 from .utility import preprocess, postprocess
 
-def compute_accuracy(attack_type: int, dataset: list, model: torchvision.models, loss_fn: any, epsilons: list, alphas: list, iters: int = 0) -> tuple[list, dict]:
+def compute_accuracy(attack_type: int, dataset: list, model: any, loss_fn: any, epsilons: list, alphas: list, iters: int = 0) -> tuple[list, dict]:
     
     accuracies: list = []
     dict_wrong_preds: dict = {}

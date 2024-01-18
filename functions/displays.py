@@ -4,7 +4,7 @@ from .hub_settings import img_resize
 from .model import inference
 from .utility import tensor2ndarray
 
-def preds_display(model: torchvision.models, tripla: tuple, epsilon: float, show_noise: bool = False) -> None:
+def preds_display(model: any, tripla: tuple, epsilon: float, show_noise: bool = False) -> None:
     
     if show_noise:
         images: list = [tensor2ndarray(tripla[0]), tensor2ndarray(tripla[1]), tensor2ndarray(tripla[2])]
@@ -36,7 +36,7 @@ def preds_display(model: torchvision.models, tripla: tuple, epsilon: float, show
 
     del images, objects, outputs_orig, outputs_pert, color, i
 
-def gradcam_display(model: torchvision.models, tripla: tuple) -> None:
+def gradcam_display(model: any, tripla: tuple) -> None:
     
     layer: str = 'layer4'
     
@@ -74,7 +74,7 @@ def gradcam_display(model: torchvision.models, tripla: tuple) -> None:
 
     del layer, titles, outputs_orig, outputs_pert, color, cam_orig, cam_pert, image_to_show_orig, image_to_show_pert, i
 
-def accuracy_display(dataset: list, model: torchvision.models, epsilons: list, accuracies: tuple, iter: int, wrong_preds: tuple, dict_show_wrong_preds: dict) -> None:
+def accuracy_display(dataset: list, model: any, epsilons: list, accuracies: tuple, iter: int, wrong_preds: tuple, dict_show_wrong_preds: dict) -> None:
     
     plt.figure()
     plt.plot(epsilons, accuracies[0], label = 'FGSM', marker = 'o', color = 'r')
@@ -102,7 +102,7 @@ def accuracy_display(dataset: list, model: torchvision.models, epsilons: list, a
     
     del temp_str
 
-def wrong_preds_display(dict_wrong_preds: dict, dataset: list, model: torchvision.models, epsilons: list, temp_str: str) -> None:
+def wrong_preds_display(dict_wrong_preds: dict, dataset: list, model: any, epsilons: list, temp_str: str) -> None:
     
     column_number: int = 4 # Numero arbitrario di grafici da creare per ciascun valore di epsilon.
     
