@@ -34,6 +34,8 @@ def preds_display(model: torchvision.models, tripla: tuple, epsilon: float, show
         else:
             plt.title(objects[2] + f' (Epsilon: {epsilon})\n\n' + str(outputs_pert[0]) + ': ' + outputs_pert[1] + f' -> {outputs_pert[2] * 100:.3}%', color = color)
 
+    del images, objects, outputs_orig, outputs_pert, color, i
+
 def gradcam_display(model: torchvision.models, tripla: tuple) -> None:
     
     layer: str = 'layer4'
@@ -70,6 +72,8 @@ def gradcam_display(model: torchvision.models, tripla: tuple) -> None:
             plt.imshow(tensor2ndarray(tripla[2]), alpha = 0.4)
             plt.title(titles[i] + '\n\n' + str(outputs_pert[0]) + ': ' + outputs_pert[1] + f' -> {outputs_pert[2] * 100:.3}%', color = color)
 
+    del layer, titles, outputs_orig, outputs_pert, color, cam_orig, cam_pert, image_to_show_orig, image_to_show_pert, i
+
 def accuracy_display(dataset: list, model: torchvision.models, epsilons: list, accuracies: tuple, iter: int, wrong_preds: tuple, dict_show_wrong_preds: dict) -> None:
     
     plt.figure()
@@ -95,6 +99,8 @@ def accuracy_display(dataset: list, model: torchvision.models, epsilons: list, a
     if dict_show_wrong_preds['show_PGD_wrong_preds'] == True:
         temp_str = 'PGD ->'
         wrong_preds_display(wrong_preds[2], dataset, model, epsilons, temp_str)
+    
+    del temp_str
 
 def wrong_preds_display(dict_wrong_preds: dict, dataset: list, model: torchvision.models, epsilons: list, temp_str: str) -> None:
     
@@ -123,3 +129,5 @@ def wrong_preds_display(dict_wrong_preds: dict, dataset: list, model: torchvisio
             plt.imshow(tensor2ndarray(dict_wrong_preds[epsilons[i]][j]))
             plt.title('Wrong pred:\n' + class_name + '\n' + f'{class_conf*100:.3}%' + '\n', color = 'red')
             plt.axis('off')
+    
+    del column_number, min_number_of_elements_in_list_for_each_epsilon, len_dict_wrong_preds_epsilons_i, i, j, class_name, class_conf

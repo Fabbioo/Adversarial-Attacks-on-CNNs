@@ -21,6 +21,8 @@ def normalize(image: torch.Tensor) -> torch.Tensor:
         std = [0.229, 0.224, 0.225]
     )
     image = normalization(image)
+
+    del normalization
     
     return image
 
@@ -31,6 +33,8 @@ def denormalize(image: torch.Tensor) -> torch.Tensor:
         std = [1/0.229, 1/0.224, 1/0.255]
     )
     image = denormalization(image)
+
+    del denormalization
     
     return image
 

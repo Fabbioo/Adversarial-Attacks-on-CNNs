@@ -23,6 +23,8 @@ def fgsm_attack(model: torchvision.models, loss_fn: any, image: torch.Tensor, ep
 
     perturbed_image: torch.Tensor = original_image + epsilon * original_image.grad.sign()
     
+    del original_image, label, output, loss
+
     return perturbed_image
 
 def ifgsm_attack(model: torchvision.models, loss_fn: any, image: torch.Tensor, epsilon: float , alpha: float, iters: int) -> torch.Tensor:
@@ -50,6 +52,8 @@ def ifgsm_attack(model: torchvision.models, loss_fn: any, image: torch.Tensor, e
         perturbed_image = torch.clamp(perturbed_image, perturbed_image - epsilon, perturbed_image + epsilon)
 
         perturbed_image = perturbed_image.detach()
+
+    del original_image, label, output, loss
 
     return perturbed_image
 
@@ -79,5 +83,7 @@ def pgd_attack(model: torchvision.models, loss_fn: any, image: torch.Tensor, eps
         perturbed_image = original_image + noise
 
         perturbed_image = perturbed_image.detach()
+    
+    del original_image, label, output, loss, adv_image, noise
     
     return perturbed_image

@@ -16,5 +16,7 @@ def inference(model: torchvision.models, image: torch.Tensor) -> tuple[int, str,
     class_id: int = output.argmax().item()
     class_name: str = ResNet50_Weights.IMAGENET1K_V2.meta['categories'][class_id]
     class_conf: float = output[class_id].item()
+
+    del output
     
     return (class_id, class_name, class_conf)

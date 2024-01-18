@@ -4,7 +4,7 @@ from .attacks import *
 from .model import inference
 from .utility import preprocess, postprocess
 
-def compute_accuracy(attack_type: int, dataset: list, model: torchvision.models, epsilons: list, alphas: list, iters: int = 0) -> tuple[list, dict]:
+def compute_accuracy(attack_type: int, dataset: list, model: torchvision.models, loss_fn: any, epsilons: list, alphas: list, iters: int = 0) -> tuple[list, dict]:
     
     accuracies: list = []
     dict_wrong_preds: dict = {}
@@ -15,8 +15,6 @@ def compute_accuracy(attack_type: int, dataset: list, model: torchvision.models,
         wrong_preds: list = []
         
         for image in dataset:
-            
-            loss_fn = nn.CrossEntropyLoss()
             
             original_image: torch.Tensor = read_image(image)
             original_image = preprocess(original_image)
@@ -37,10 +35,14 @@ def compute_accuracy(attack_type: int, dataset: list, model: torchvision.models,
                 correct_predicts += 1
             else:
                 wrong_preds.append(perturbed_image)
+            
+            del image, original_image, perturbed_image, pred1, pred2
         
         correct_predicts /= len(dataset)
         accuracies.append(correct_predicts)
         np.random.shuffle(wrong_preds)
         dict_wrong_preds[epsilon] = wrong_preds
+
+        del correct_predicts, wrong_preds, epsilon, alpha
         
     return (accuracies, dict_wrong_preds)
