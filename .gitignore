@@ -1,0 +1,5 @@
+
+.DS_Store
+res/*.pth
+report.docx
+test.ipynb
