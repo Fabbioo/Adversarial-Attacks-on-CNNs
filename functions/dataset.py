@@ -33,3 +33,6 @@ def load_dataset(images_path: str, added_new_images: bool = False) -> list[str]:
     del images
     
     return dataset
+
+def len_dataset(images_path: str) -> int:
+    return len(load_dataset(images_path))

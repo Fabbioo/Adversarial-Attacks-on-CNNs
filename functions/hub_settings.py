@@ -33,3 +33,17 @@ working_directory_path: str = os.getcwd()
 images_path: str = working_directory_path + "/images"
 results_path: str = working_directory_path + "/res"
 perturbed_images_path: str = working_directory_path + "/perturbed_images"
+
+epsilon_fgsm: float = 0.4 # Customize this value.
+
+epsilon_ifgsm: float = 0.4 # Customize this value.
+iter_ifgsm: int = 100 # Customize this value.
+alpha_ifgsm: float = epsilon_ifgsm/iter_ifgsm # Customize this value.
+
+epsilon_pgd: float = 0.4 # Customize this value.
+iter_pgd: int = 100 # Customize this value.
+alpha_pgd: float = epsilon_pgd/iter_pgd # Customize this value.
+
+epsilons: list[float] = [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1] # Customize these values.
+alphas: list[float] = [elem/100 for elem in epsilons] # Customize these values.
+iters: list[int] = [5, 10, 25, 50, 75, 100] # Customize these values.

@@ -26,8 +26,6 @@ def compute_accuracy(attack_type: int, dataset: list[str], model: any, loss_fn: 
                     perturbed_image: torch.Tensor = ifgsm_attack(model, loss_fn, original_image, epsilon, alpha, iters)
                 case "PGD":
                     perturbed_image: torch.Tensor = pgd_attack(model, loss_fn, original_image, epsilon, alpha, iters)
-                case _:
-                    raise ValueError("Invalid attack type")
             
             original_image = postprocess(original_image)
             perturbed_image = postprocess(perturbed_image)
